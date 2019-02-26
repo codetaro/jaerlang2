@@ -10,8 +10,10 @@
 -author("dennisyuan").
 
 %% API
--export([for/3, qsort/1, pythag/1, perms/1, max/2, odds_and_evens/1,
-  my_tuple_to_list/1, my_time_func/1, my_date_string/2]).
+-export([
+  for/3, qsort/1, pythag/1, perms/1, odds_and_evens/1,
+  my_tuple_to_list/1, my_time_func/1, my_date_string/0
+]).
 
 
 for(Max, Max, F) -> [F(Max)];
@@ -35,8 +37,8 @@ pythag(N) ->
 perms([]) -> [[]];
 perms(L) -> [[H | T] || H <- L, T <- perms(L -- [H])].
 
-max(X, Y) when X > Y -> X;
-max(X, Y) -> Y.
+%%max(X, Y) when X > Y -> X;
+%%max(X, Y) -> Y.
 
 %%odds_and_evens(L) ->
 %%  Odds = [X || X <- L, (X rem 2) =:= 1],
@@ -65,11 +67,12 @@ my_tuple_to_list_acc(T, L) ->
   my_tuple_to_list_acc(Tuple, [Element | L]).
 
 my_time_func(F) ->
-  Date = erlang:date(),
-  Time = erlang:time(),
-  F(Date, Time).
+  {StartMega, StartSec, StartMicro} = erlang:now(),
+  F(),
+  {EndMega, EndSec, EndMicro} = erlang:now(),
+  {EndMega - StartMega, EndSec - StartSec, EndMicro - StartMicro}.
 
-my_date_string(Date, Time) ->
-  {Year, Mon, Day} = Date,
-  {Hour, Min, Sec} = Time,
-  Year + "-" + Mon + "-" + Day + " " + Hour + ":" + Min + ":" + Sec.
+my_date_string() ->
+  {Year, Month, Day} = erlang:date(),
+  {Hour, Minute, Second} = erlang:time(),
+  io:format("~w-~w-~w ~w:~w:~w~n", [Year, Month, Day, Hour, Minute, Second]).
