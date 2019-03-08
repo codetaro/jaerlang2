@@ -26,9 +26,9 @@ catcher(N) ->
   try generate_exception(N) of
     Val -> {N, normal, Val}
   catch
-    throw:X -> {N, caught, thrown, X};
-    exit:X -> {N, caught, exited, X};
-    error:X -> {N, caught, error, X}
+    throw:X -> [{N, usr, thrown, X}, {N, dev, thrown, X, erlang:get_stacktrace()}];
+    exit:X -> [{N, usr, exited, X}, {N, dev, exited, X, erlang:get_stacktrace()}];
+    error:X -> [{N, usr, error, X}, {N, dev, error, X, erlang:get_stacktrace()}]
   end.
 
 demo2() ->
