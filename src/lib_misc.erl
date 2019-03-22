@@ -11,7 +11,7 @@
 
 %% API
 -export([for/3, qsort/1, pythag/1, perms/1, max/2, odds_and_evens1/1, odds_and_evens2/1,
-  my_tuple_to_list/1, my_time_func/1, my_date_string/0, sqrt/1]).
+  my_tuple_to_list/1, my_time_func/1, my_date_string/0, sqrt/1, sum/1]).
 
 
 for(Max, Max, F) -> [F(Max)];
@@ -81,3 +81,8 @@ sqrt(X) when X < 0 ->
   error({squareRootNegativeArgument, X});
 sqrt(X) ->
   math:sqrt(X).
+
+sum(L) -> sum(L, 0).
+
+sum([], N) -> N;
+sum([H | T], N) -> sum(T, H + N).
